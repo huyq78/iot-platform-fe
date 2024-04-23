@@ -7,11 +7,9 @@ import { USER_REFRESH_TOKEN } from 'src/constants/app';
 
 export interface ILoginResponse {
   id: string;
-  name: string;
   role: PermissionRole;
   token: string;
   email: string;
-  tenant: string;
   refreshToken: string;
 }
 

@@ -16,7 +16,7 @@ export enum HTTP_STATUS_CODE {
 }
 
 export enum HTTP_STATUS_RESPONSE_KEY {
-  SUCCESS = '000000',
+  SUCCESS = '000200',
   BAD_REQUEST = '000400',
   NOT_FOUND = '000404',
   AUTHORIZATION = '000401',
@@ -32,17 +32,4 @@ export enum ENDPOINT {
   CREATE_PASSWORD = '/auth/create-new-password',
   FORGOT_PASSWORD = '/auth/forgot-password',
   CHANGE_PASSWORD = '/auth/create-new-password',
-  ACTIVE_ACCOUNT = '/user-mgt/account/activate',
-
-  // Account management
-  GET_ACCOUNT_LIST = '/system-mgt/account/view',
-  GET_ACCOUNT_DETAIL = '/system-mgt/view/:id',
-  CREATE_ACCOUNT = '/system-mgt/account/create',
-  UPDATE_ACCOUNT = '/system-mgt/account/update/:id',
-  GET_LIST_ROLE = '/user-permission/roles',
-  GET_LIST_PERMISSION = '/user-permission/list',
-  UPDATE_LIST_PERMISSION = 'user-permission/update',
-  GET_LIST_USER_ASSIGN = 'user/view/list',
-  GET_NEW_LINK_ACTIVE_ACCOUNT = '/system-mgt/account/resent-active-link',
-  GET_USER_ASSIGN_BY_EMAIL = '/user/email',
 }

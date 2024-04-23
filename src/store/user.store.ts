@@ -5,7 +5,6 @@ export interface IUserStore {
   isLoggedIn: boolean;
   rememberLoginSession: boolean;
   userInfo?: IUserInfo;
-  // changePassword(dto: IUpdatePasswordBody): Promise<boolean>;
   afterLogin(userInfo: IUserInfo, rememberMe: boolean): void;
   logout(): void;
   updateUserInfo(userInfo: IUserInfo): void;

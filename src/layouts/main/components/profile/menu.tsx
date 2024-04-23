@@ -1,7 +1,7 @@
 import { Button, Col, Menu, Modal, Row, Typography } from 'antd';
 import React, { FC, useState } from 'react';
 import styles from './menu.module.less';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { i18nKey } from 'src/locales/i18n';
 import { PAGE_ROUTE } from 'src/constants/route';
@@ -10,7 +10,6 @@ import { MenuItem } from 'src/hooks/use-menu-item';
 const ProfileMenu: FC = () => {
   const location = useLocation();
   const { t } = useTranslation();
-  const navigator = useNavigate();
   const [open, setOpen] = useState(false);
   const onCancel = () => {
     setOpen(false);
@@ -21,18 +20,6 @@ const ProfileMenu: FC = () => {
   }
 
   const menu: MenuItem[] = [
-    {
-      label: t(i18nKey.menu.myProfile),
-      key: PAGE_ROUTE.PROFILE,
-      onClick: () =>
-      navigator(PAGE_ROUTE.PROFILE)
-    } as MenuItem,
-    {
-      label: t(i18nKey.menu.changePassword),
-      key: PAGE_ROUTE.PROFILE_CHANGE_PASSWORD,
-      onClick: () =>
-      navigator(PAGE_ROUTE.PROFILE_CHANGE_PASSWORD)
-    } as MenuItem,
     {
       label: t(i18nKey.menu.logout),
       key: PAGE_ROUTE.LOGOUT,

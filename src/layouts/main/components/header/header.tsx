@@ -11,8 +11,6 @@ import {
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import styles from './header.module.less';
-import { PAGE_ROUTE } from 'src/constants/route';
-import { Link } from 'react-router-dom';
 import { i18nKey } from 'src/locales/i18n';
 import { useTranslation } from 'react-i18next';
 import { IUserStore } from 'src/store/user.store';
@@ -55,12 +53,6 @@ const AppHeader: FC = () => {
           )}
           <p>{`${userStore.userInfo?.first_name} ${userStore.userInfo?.last_name}`}</p>
         </div>
-        <Link to={PAGE_ROUTE.PROFILE}>
-          <div className={styles.item}>{t(i18nKey.menu.myProfile)}</div>
-        </Link>
-        <Link to={PAGE_ROUTE.PROFILE_CHANGE_PASSWORD}>
-          <div className={styles.item}>{t(i18nKey.menu.changePassword)}</div>
-        </Link>
         <div className={styles.item} onClick={onLogoutClick}>
           <span>{t(i18nKey.menu.logout)}</span>
         </div>

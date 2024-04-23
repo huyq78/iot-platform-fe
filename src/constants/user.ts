@@ -3,22 +3,6 @@ export enum UserRole {
   USER = 'User'
 }
 
-export enum TargetModel {
-  TENANT = 'Tenant',
-  LOCATION = 'Location'
-}
-export enum ManagerType {
-  TENANT = 'Tenant Owner',
-  LOCATION = 'Location Owner'
-}
-
-export interface UserManageModel {
-  user_id: string;
-  type: ManagerType;
-  target: string;
-  target_model: TargetModel;
-}
-
 export interface IOptionUserAssign {
   label: string;
   avatar?: string;

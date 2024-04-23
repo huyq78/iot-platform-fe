@@ -1,30 +1,10 @@
 import validation from './validation';
 import loginPage from './loginPage';
-import accountEntity from './accountEntity';
-// import tenantEntity from './tenantEntity';
-// import emsEntity from './emsEntity';
-// import plantEntity from './plantEntity';
-// import permissionEntity from './permissionEntity';
-// import userActivityLogs from './userActivityLogs';
-// import notifications from './notifications';
-// import commandLogs from './commandLogs';
-// import dashboard from './dashboard';
-// import alarmCenter from './alarmCenter';
 
 const en = {
   loginPage,
-  accountEntity,
-  // tenantEntity,
-  // emsEntity,
-  // plantEntity,
-  // alarmCenter,
   validation,
   confirm,
-  // permissionEntity,
-  // userActivityLogs,
-  // commandLogs,
-  // notifications,
-  // dashboard,
   httpResponseMessage: {
     _400_BadRequest:
       'The server cannot process the request due to a client error.',

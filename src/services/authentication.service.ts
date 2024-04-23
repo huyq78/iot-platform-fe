@@ -16,14 +16,6 @@ import {
 import { ForgotPasswordDTO } from 'src/dto/forgot-password.dto';
 import eventEmitter from 'src/store/event';
 import { PermissionRole } from 'src/dto/account-management-list.dto';
-import {
-  ChangeForgotPasswordDTO,
-  IChangePasswordBody
-} from 'src/dto/change-password.dto';
-import {
-  ActiveAccountDTO,
-  IBodyActiveAccount
-} from 'src/dto/account-active.dto';
 
 export interface IAuthenticationService {
   isAuthenticated: boolean;
@@ -32,8 +24,6 @@ export interface IAuthenticationService {
   login(form: LogInDTO): Promise<ResponseDTO<ILoginResponse>>;
   logout(): Promise<boolean>;
   forgotPassword(values: ForgotPasswordDTO): Promise<boolean | string>;
-  changeForgotPassword(values: IChangePasswordBody): Promise<ResponseDTO<any>>;
-  activeAccount(body: IBodyActiveAccount): Promise<ResponseDTO<any>>;
   setPermissionRole(permissionRole: PermissionRole | null,isRememberMe: boolean): void;
 }
 
@@ -135,32 +125,5 @@ export class AuthenticationService implements IAuthenticationService {
       return true;
     }
     return result.message || '';
-  }
-
-  public async changeForgotPassword(
-    values: IChangePasswordBody
-  ): Promise<ResponseDTO<any>> {
-    const changeForgotPasswordDTO = new ChangeForgotPasswordDTO(values);
-    const result: ResponseDTO<ILoginResponse> = await this.httpService.request<
-      ChangeForgotPasswordDTO,
-      ILoginResponse
-    >(changeForgotPasswordDTO);
-    return result;
-  }
-
-  public async activeAccount(
-    body: IBodyActiveAccount
-  ): Promise<ResponseDTO<any>> {
-    const activeAccountDTO = new ActiveAccountDTO(body);
-    const res: ResponseDTO<any> = await this.httpService.request(
-      activeAccountDTO
-    );
-    if (res.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
-      runInAction(() => {
-        this.isAuthenticated = false;
-        localStorage.clear();
-      });
-    }
-    return res;
   }
 }
