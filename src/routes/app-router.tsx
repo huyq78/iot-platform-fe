@@ -34,6 +34,15 @@ const publicRoutes: RouteType[] = [
           'src/pages/login/components/forgot-password/forgot-password.page'
         )
     )
+  },
+  {
+    path: PAGE_ROUTE.CHANGE_PASSWORD,
+    element: lazy(
+      () =>
+        import(
+          'src/pages/login/components/change-password/change-password.page'
+        )
+    )
   }
 ];
 

@@ -8,4 +8,5 @@ export enum PAGE_ROUTE {
   ACCOUNT_MANAGEMENT = '/account',
   NEW_ACCOUNT = '/account/new',
   UPDATE_ACCOUNT = '/account/update/:id',
+  CHANGE_PASSWORD = '/change-password',
 }
