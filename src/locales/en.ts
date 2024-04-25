@@ -1,10 +1,14 @@
 import validation from './validation';
 import loginPage from './loginPage';
+import permissionEntity from './permissionEntity';
+import accountEntity from './accountEntity';
 
 const en = {
   loginPage,
   validation,
   confirm,
+  permissionEntity,
+  accountEntity,
   httpResponseMessage: {
     _400_BadRequest:
       'The server cannot process the request due to a client error.',

@@ -18,14 +18,19 @@ const ProtectedRoute: React.FC<IProtected> = ({ children }) => {
 
   const ROUTE_PERMISSION_ACCESS_MAP: Record<any, Array<Permission>> = {
     [PAGE_ROUTE.DASHBOARD]: [] as Array<Permission>,
+    [PAGE_ROUTE.ACCOUNT_MANAGEMENT]: [],
+    [PAGE_ROUTE.NEW_ACCOUNT]: [
+    ],
+    [PAGE_ROUTE.UPDATE_ACCOUNT]: [],
   };
+  
   if (!authService.isAuthenticated) {
     return <Navigate to={PAGE_ROUTE.LOGIN} replace />;
   }
   //check permission
 
   const listMyPermission =
-    authService.permissionRole?.groups.map((group) => group.permission.key) ||
+    authService.permissionRole?.groups?.map((group) => group.permission.key) ||
     [];
 
   const listRoute = Object.values(PAGE_ROUTE as Object).map((value) => ({

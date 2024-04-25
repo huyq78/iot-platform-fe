@@ -1,9 +1,8 @@
+import { PermissionRole } from 'src/dto/account-management-list.dto';
+
 export enum Role {
-  SUPER_ADMIN = 'super-admin',
-  TENANT_ADMIN = 'tenant-admin',
-  ANALYST = 'analyst',
-  CUSTOMER_SERVICE = 'customer-service',
-  Viewer = 'viewer'
+  Admin = 'admin',
+  User = 'user'
 }
 
 export interface IUserRole {
@@ -20,7 +19,7 @@ export interface IUserInfo {
   last_name: string;
   phone_number: string;
   phone_code: string;
-  // role: PermissionRole;
+  role: PermissionRole;
   avatar?: string;
 }
 
@@ -34,12 +33,11 @@ export interface IUserResponseGetByEmail {
 
 export interface IAccountInfo {
   id: string;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
-  phone_code: string;
-  phone_number: string;
-  is_active: true;
+  phoneCode: string;
+  phoneNumber: string;
+  isActive: true;
   role: IUserRole;
-  tenants: string[];
 }

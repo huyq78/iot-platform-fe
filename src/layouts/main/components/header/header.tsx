@@ -11,16 +11,26 @@ import {
 import { observer } from 'mobx-react-lite';
 import React, { FC, useState } from 'react';
 import styles from './header.module.less';
+import { PAGE_ROUTE } from 'src/constants/route';
+import { useNavigate } from 'react-router-dom';
+import { IAuthenticationService } from 'src/services/authentication.service';
+import useService from 'src/hooks/use-service';
 import { i18nKey } from 'src/locales/i18n';
 import { useTranslation } from 'react-i18next';
 import { IUserStore } from 'src/store/user.store';
 import useStore from 'src/hooks/use-store';
+import { IClientService } from 'src/services/websocket/client.service';
 
 export interface IProp {
   toggleCollapsed?: () => void;
 }
 
 const AppHeader: FC = () => {
+  const authService: IAuthenticationService = useService(
+    'authenticationService'
+  );
+  const socketService: IClientService = useService('socketService');
+  const navigator = useNavigate();
   const [open, setOpen] = useState(false);
   const [openPopupProfile, setOpenPopupProfile] = useState<boolean>(false);
   const onLogoutClick = () => {
@@ -32,6 +42,15 @@ const AppHeader: FC = () => {
   const { t } = useTranslation();
   const onCancel = () => {
     setOpen(false);
+  };
+  const onSubmit = () => {
+    authService
+      .logout()
+      .then(() => {
+        socketService.disconnect();
+        navigator(PAGE_ROUTE.LOGIN);
+      })
+      .catch();
   };
 
   const HeaderMenu = () => {
@@ -115,7 +134,7 @@ const AppHeader: FC = () => {
                 </Button>
               </Col>
               <Col span={12}>
-                <Button className={styles.footer_submit}>
+                <Button onClick={onSubmit} className={styles.footer_submit}>
                   {t(i18nKey.button.ok)}
                 </Button>
               </Col>

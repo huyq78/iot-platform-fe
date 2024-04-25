@@ -5,13 +5,17 @@ import { i18nKey } from 'src/locales/i18n';
 import { PAGE_ROUTE } from 'src/constants/route';
 import { ReactComponent as DashboardIcon } from 'src/assets/icons/Dashboard-default.svg';
 import { ReactComponent as DashboardIconActive } from 'src/assets/icons/Dashboard-active.svg';
-import { useMatch, useLocation } from 'react-router-dom';
+import { ReactComponent as AccountManagement } from 'src/assets/icons/People-icon.svg';
+import { ReactComponent as AccountManagementActive } from 'src/assets/icons/People-icon-active.svg';
+import { useMatch, useLocation, useNavigate } from 'react-router-dom';
+// import { Permission } from 'src/constants/user';
 
 export type MenuItem = Required<MenuProps>['items'][number];
 
 const useMenuItem = () => {
   const location = useLocation();
   const [t] = useTranslation();
+  const navigator = useNavigate();
 
   const menu: MenuItem[] = [
     {
@@ -24,7 +28,18 @@ const useMenuItem = () => {
         ) : (
           <DashboardIcon />
         ),
+      onClick: () => navigator(PAGE_ROUTE.DASHBOARD)
     } as MenuItem,
+    {
+      label: t(i18nKey.menu.accountManagement),
+      key: PAGE_ROUTE.ACCOUNT_MANAGEMENT,
+      icon: useMatch(PAGE_ROUTE.ACCOUNT_MANAGEMENT) ? (
+        <AccountManagementActive />
+      ) : (
+        <AccountManagement />
+      ),
+      onClick: () => navigator(PAGE_ROUTE.ACCOUNT_MANAGEMENT)
+    } as MenuItem
   ];
 
   return menu;

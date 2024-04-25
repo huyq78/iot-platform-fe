@@ -11,7 +11,7 @@ import {
   Typography,
   message
 } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CustomPassword from 'src/components/custom-password/custom-password';
 import { PAGE_ROUTE } from 'src/constants/route';
 import styles from './login.module.less';
@@ -23,9 +23,6 @@ import IconEmail from 'src/assets/icons/Login-mail.svg';
 import IconProfile from 'src/assets/icons/Login-profile.svg';
 import { ILoginResponse, LogInDTO } from 'src/dto/authentication.dto';
 import { messageResponse } from 'src/constants/message-response';
-// import useStore from 'src/hooks/use-store';
-// import { ITenantListStore } from 'src/store/tenant/tenant-list.store';
-// import { ITenantListRequest } from 'src/dto/tenant-list.dto';
 import { ResponseDTO } from 'src/dto/base.dto';
 import { HTTP_STATUS_RESPONSE_KEY } from 'src/constants/api';
 
@@ -33,20 +30,12 @@ const LoginPage: React.FC = () => {
   const authService: IAuthenticationService = useService(
     'authenticationService'
   );
-  // const tenantListStore: ITenantListStore = useStore('listTenantStore');
   const [loginForm] = Form.useForm();
 
   const [iconEmail, setIconEmail] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [t] = useTranslation();
-  // const navigator = useNavigate();
-  // const fetchData = async (request?: ITenantListRequest) => {
-  //   try {
-  //     await tenantListStore.fetchListNoPermission(request);
-  //   } catch (error) {
-  //     throw Error;
-  //   }
-  // };
+  const navigator = useNavigate();
 
   const onFormFinish = async (values: ILoginForm) => {
     setSubmitting(true);
@@ -60,6 +49,7 @@ const LoginPage: React.FC = () => {
         if (rs.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
           // await fetchData({ limit: 15 });
           message.success(`${t(i18nKey.validation.common.loginSuccess)}`);
+          navigator(PAGE_ROUTE.DASHBOARD);
         }
         if (rs.message === messageResponse.inactiveAccountNotification) {
           message.error(
