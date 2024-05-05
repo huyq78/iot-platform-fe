@@ -48,4 +48,18 @@ export enum ENDPOINT {
   GET_LIST_USER_ASSIGN = 'user/view/list',
   GET_NEW_LINK_ACTIVE_ACCOUNT = '/system-mgt/account/resent-active-link',
   GET_USER_ASSIGN_BY_EMAIL = '/user/email',
+
+  //Parameter
+  GET_PARAMETER_LIST = '/parameter-standard',
+  CREATE_PARAMETER = '/parameter-standard',
+  UPDATE_PARAMETER = '/parameter-standard/:id',
+  DELETE_PARAMETER = '/parameter-standard/:id',
+  GET_PARAMETER_DETAIL = '/parameter-standard/:id',
+
+  //Device Model
+  GET_DEvICE_MODEL_LIST = '/device-model',
+  CREATE_DEVICE_MODEL = '/device-model',
+  UPDATE_DEVICE_MODEL = '/device-model/:id',
+  DELETE_DEVICE_MODEL = '/device-model/:id',
+  GET_DEVICE_MODEL_DETAIL = '/device-model/:id'
 }

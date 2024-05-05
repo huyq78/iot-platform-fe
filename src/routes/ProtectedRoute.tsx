@@ -22,6 +22,8 @@ const ProtectedRoute: React.FC<IProtected> = ({ children }) => {
     [PAGE_ROUTE.NEW_ACCOUNT]: [
     ],
     [PAGE_ROUTE.UPDATE_ACCOUNT]: [],
+    [PAGE_ROUTE.PARAMETER]: [],
+    [PAGE_ROUTE.DEVICE_MODEL]: [],
   };
   
   if (!authService.isAuthenticated) {

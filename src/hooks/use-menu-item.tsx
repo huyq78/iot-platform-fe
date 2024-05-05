@@ -7,6 +7,10 @@ import { ReactComponent as DashboardIcon } from 'src/assets/icons/Dashboard-defa
 import { ReactComponent as DashboardIconActive } from 'src/assets/icons/Dashboard-active.svg';
 import { ReactComponent as AccountManagement } from 'src/assets/icons/People-icon.svg';
 import { ReactComponent as AccountManagementActive } from 'src/assets/icons/People-icon-active.svg';
+import { ReactComponent as SystemIcon } from 'src/assets/icons/Setting-default.svg';
+import { ReactComponent as SystemIconActive } from 'src/assets/icons/Setting-active.svg';
+import { ReactComponent as UserLogsIcon } from 'src/assets/icons/User-activity.svg';
+import { ReactComponent as UserLogsIconActive } from 'src/assets/icons/User-activity-active.svg';
 import { useMatch, useLocation, useNavigate } from 'react-router-dom';
 // import { Permission } from 'src/constants/user';
 
@@ -39,6 +43,38 @@ const useMenuItem = () => {
         <AccountManagement />
       ),
       onClick: () => navigator(PAGE_ROUTE.ACCOUNT_MANAGEMENT)
+    } as MenuItem,
+    {
+      label: t(i18nKey.menu.masterData),
+      key: PAGE_ROUTE.MASTER_DATA,
+      icon:
+        location.pathname.includes(PAGE_ROUTE.PARAMETER)  ? (
+          <SystemIconActive />
+        ) : (
+          <SystemIcon />
+        ),
+      children: [
+        {
+          label: t(i18nKey.menu.parameter),
+          key: PAGE_ROUTE.PARAMETER,
+          icon: useMatch(PAGE_ROUTE.PARAMETER) ? (
+            <UserLogsIconActive />
+          ) : (
+            <UserLogsIcon />
+          ),
+          onClick: () => navigator(PAGE_ROUTE.PARAMETER),
+        },
+        {
+          label: t(i18nKey.menu.deviceModel),
+          key: PAGE_ROUTE.DEVICE_MODEL,
+          icon: useMatch(PAGE_ROUTE.DEVICE_MODEL) ? (
+            <UserLogsIconActive />
+          ) : (
+            <UserLogsIcon />
+          ),
+          onClick: () => navigator(PAGE_ROUTE.DEVICE_MODEL),
+        },
+      ]
     } as MenuItem
   ];
 

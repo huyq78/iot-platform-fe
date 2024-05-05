@@ -2,6 +2,8 @@ import validation from './validation';
 import loginPage from './loginPage';
 import permissionEntity from './permissionEntity';
 import accountEntity from './accountEntity';
+import parameterEntity from './prameterEntity';
+import deviceModelEntity from './deviceModelEntity';
 
 const en = {
   loginPage,
@@ -9,6 +11,8 @@ const en = {
   confirm,
   permissionEntity,
   accountEntity,
+  parameterEntity,
+  deviceModelEntity,
   httpResponseMessage: {
     _400_BadRequest:
       'The server cannot process the request due to a client error.',
@@ -61,13 +65,9 @@ const en = {
 
   menu: {
     dashboard: 'Dashboard',
-    alarmCenter: 'Alarm Center',
-    tenantCenter: 'Tenant Center',
-    plantCenter: 'Plant Center',
-    emsCenter: 'EMS Center',
-    systemManagement: 'System Management',
-    userActivityLogs: 'User Activity Logs',
-    commandLogs: 'Command Logs',
+    masterData: 'Master Data',
+    parameter: 'Parameter',
+    deviceModel: 'Device Model',
     accountManagement: 'Account Management',
     rolesAndPermissions: 'Roles & Permissions',
     notifications: 'Notifications',
@@ -112,7 +112,8 @@ const en = {
     name: 'Name',
     owner: 'Owner',
     tel: 'TEL',
-    hubId: 'Hub ID'
+    hubId: 'Hub ID',
+    information: 'Information',
   },
 
   button: {
@@ -136,7 +137,8 @@ const en = {
 
   defaultPlaceholder: {
     search: 'Search by Tenant, Plant, Location, Full Name, Email',
-    searchAccount: 'Search by Full Name, Email'
+    searchAccount: 'Search by Full Name, Email',
+    searchParameter: 'Search by Name'
   },
 
   messageIndicator: {
