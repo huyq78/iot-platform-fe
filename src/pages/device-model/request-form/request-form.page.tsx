@@ -22,22 +22,29 @@ import { i18nKey } from 'src/locales/i18n';
 import FormProperty from './form-property/form-property.page';
 import styles from './request-form.module.less';
 import ToastifyConfirm from 'src/components/toastify-confirm/toastify-confirm';
+import { IDeviceModelStore } from 'src/store/device-model/device-model.store';
 import {
-  BodyCreateParameterDTO,
-  BodyUpdateParameterDTO
-} from 'src/dto/parameter.dto';
+  BodyCreateDeviceModelDTO,
+  BodyUpdateDeviceModelDTO
+} from 'src/dto/device-model.dto';
 import { IParameterStore } from 'src/store/parameter/parameter.store';
 
-export interface IParameterFormI {
-  thresholds: Array<{
-    name: string;
-    color: string;
-    min: number;
-    max: number;
-  }>;
+export interface IOptions {
+  name?: string;
+  _id?: string;
+}
+
+export interface IOption {
+  key?: string;
+  label?: string;
+  value?: string;
+}
+
+export interface IDeviceModelFormI {
+  parameterStandards: Array<string>;
   name: string;
-  unit: string;
-  weight: number;
+  information: string;
+  type: string;
 }
 
 const RequestForm: React.FC = () => {
@@ -45,65 +52,77 @@ const RequestForm: React.FC = () => {
   const params = useParams();
   const navigator = useNavigate();
   const { Footer } = Layout;
-  const [form] = Form.useForm<IParameterFormI>();
+  const [form] = Form.useForm<IDeviceModelFormI>();
   const [isDisable, setIsDisable] = useState(true);
-  const [dataParameterDetail, setDataParameterDetail] = useState<
-    IParameterFormI | Partial<IParameterFormI>
+  const [dataDeviceModelDetail, setDataDeviceModelDetail] = useState<
+    IDeviceModelFormI | Partial<IDeviceModelFormI>
   >({});
   const [loading, setLoading] = useState(false);
   const [openToastifyConfirm, setToastifyConfirm] = useState<boolean>(false);
   const [action, setAction] = useState<'create' | 'update' | 'cancel'>(
     'cancel'
   );
+  const [options, setOptions] = useState<IOption[]>();
 
   //store
+  const dataDeviceModel: IDeviceModelStore = useStore('deviceModelStore');
   const dataParameter: IParameterStore = useStore('parameterStore');
 
   const screen = Grid.useBreakpoint();
 
+  const fetchDataParameter = async () => {
+    try {
+      const callback = (e: IOptions) => ({
+        label: e.name,
+        value: e._id,
+        key: e._id
+      });
+      await dataParameter.fetchList();
+      const res = dataParameter.listParameter;
+      const params = (res ?? []).map(callback);
+      setOptions([...params]);
+    } catch (error) {
+      throw Error;
+    }
+  };
+
   useEffect(() => {
     if (params.id) {
       setLoading(true);
-      dataParameter.getDetailParameter({ id: params.id }).then((rs) => {
+      dataDeviceModel.getDetailDeviceModel({ id: params.id }).then((rs) => {
         setLoading(false);
         if (rs.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
-          const resParameterDetail = rs.data;
+          const resDeviceModelDetail = rs.data;
 
-          const thresholds = resParameterDetail?.thresholds.length
-            ? resParameterDetail?.thresholds.map((item) => {
-                return {
-                  name: item.name,
-                  color: item.color,
-                  min: item.min,
-                  max: item.max
-                };
+          const parameterStandards: string[] = resDeviceModelDetail
+            ?.parameterStandards.length
+            ? resDeviceModelDetail?.parameterStandards.map((item) => {
+                return item._id;
               })
-            : [
-                {
-                  name: '',
-                  color: '',
-                  min: '',
-                  max: ''
-                }
-              ];
-          const name = resParameterDetail?.name;
-          const unit = resParameterDetail?.unit;
-          const weight = resParameterDetail?.weight;
+            : [''];
+          const name = resDeviceModelDetail?.name;
+          const information = resDeviceModelDetail?.information;
+          const type = resDeviceModelDetail?.type;
 
-          setDataParameterDetail({
+          setDataDeviceModelDetail({
             name,
-            unit,
-            weight,
-            thresholds
-          } as IParameterFormI);
+            information,
+            type,
+            parameterStandards
+          } as IDeviceModelFormI);
         }
       });
     }
+    fetchDataParameter();
   }, []);
 
   useEffect(() => {
-    form.setFieldsValue({ ...dataParameterDetail });
-  }, [dataParameterDetail]);
+    form.setFieldsValue({ ...dataDeviceModelDetail });
+  }, [dataDeviceModelDetail]);
+  console.log(
+    '🚀 ~ useEffect ~ form:',
+    form.getFieldValue('parameterStandards')
+  );
 
   const onFormFailed = () => {
     return 2;
@@ -111,55 +130,32 @@ const RequestForm: React.FC = () => {
 
   const handleConfirmOk = () => {
     form.submit();
-    // navigator(PAGE_ROUTE.PARAMETER);
+    // navigator(PAGE_ROUTE.DEVICE_MODEL);
   };
 
   const handleCancelPopupConfirm = () => {
     setToastifyConfirm(false);
-    // navigator(PAGE_ROUTE.PARAMETER);
+    navigator(PAGE_ROUTE.DEVICE_MODEL);
   };
 
-  const handleCreateParameter = async (values: IParameterFormI) => {
+  const handleCreateDeviceModel = async (values: IDeviceModelFormI) => {
     try {
       setLoading(true);
       setToastifyConfirm(false);
-      const thresholds = values.thresholds.reduce(
-        (
-          acc: Array<{
-            name: string;
-            color: string;
-            min: number;
-            max: number;
-          }>,
-          item
-        ) => {
-          if (item.name) {
-            acc.push({
-              name: item.name,
-              color: item.color,
-              min: item.min,
-              max: item.max
-            });
-          }
-          return acc;
-        },
-        []
-      );
-      //--------------------------------------------//
 
-      const bodyCreateParameter: BodyCreateParameterDTO = {
+      const bodyCreateDeviceModel: BodyCreateDeviceModelDTO = {
         name: values.name,
-        unit: values.unit,
-        weight: values.weight,
-        thresholds
+        information: values.information,
+        type: values.type,
+        parameterStandards: values.parameterStandards ?? []
       };
 
-      const rs = await dataParameter.createParameter(bodyCreateParameter);
+      const rs = await dataDeviceModel.createDeviceModel(bodyCreateDeviceModel);
       if (rs.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
         //----------------Download file----------------//
 
         message.success(t(i18nKey.validation.common.toastCreateSuccess));
-        navigator(PAGE_ROUTE.PARAMETER);
+        // navigator(PAGE_ROUTE.DEVICE_MODEL);
       } else if (rs.message === 'name-ineligible') {
         message.error(t(i18nKey.validation.plant.existingName));
       } else {
@@ -170,46 +166,26 @@ const RequestForm: React.FC = () => {
     }
   };
 
-  const handleUpdateParameter = async (values: IParameterFormI) => {
+  const handleUpdateDeviceModel = async (values: IDeviceModelFormI) => {
     try {
       setLoading(true);
       setToastifyConfirm(false);
-      const thresholds = values.thresholds.reduce(
-        (
-          acc: Array<{
-            name: string;
-            color: string;
-            min: number;
-            max: number;
-          }>,
-          item
-        ) => {
-          if (item.name) {
-            acc.push({
-              name: item.name,
-              color: item.color,
-              min: item.min,
-              max: item.max
-            });
-          }
-          return acc;
-        },
-        []
-      );
-      //--------------------------------------------//
 
-      const bodyUpdateParameter: BodyUpdateParameterDTO = {
+      const bodyUpdateDeviceModel: BodyUpdateDeviceModelDTO = {
         name: values.name,
-        unit: values.unit,
-        weight: values.weight,
-        thresholds
+        information: values.information,
+        type: values.type,
+        parameterStandards: values.parameterStandards ?? []
       };
-      const rs = await dataParameter.updateParameter(bodyUpdateParameter, {
-        id: params.id as string
-      });
+      const rs = await dataDeviceModel.updateDeviceModel(
+        bodyUpdateDeviceModel,
+        {
+          id: params.id as string
+        }
+      );
       if (rs.responseCode === HTTP_STATUS_RESPONSE_KEY.SUCCESS) {
         message.success(t(i18nKey.validation.common.toastUpdateSuccess));
-        navigator(PAGE_ROUTE.PARAMETER);
+        navigator(PAGE_ROUTE.DEVICE_MODEL);
       } else if (rs.message === 'name-ineligible') {
         message.error(t(i18nKey.validation.plant.existingName));
       } else {
@@ -224,16 +200,10 @@ const RequestForm: React.FC = () => {
     setIsDisable(false);
   };
 
-  const onChangeColor = (color: string, idx: number) => {
-    const thresholds = form.getFieldValue('thresholds');
-    thresholds[idx].color = color;
-    form.setFieldValue('thresholds', thresholds);
-  };
-
   const renderFormItem = () => {
     return (
       <div>
-        <FormProperty onChangeColor={onChangeColor} />
+        <FormProperty options={options} />
       </div>
     );
   };
@@ -323,8 +293,12 @@ const RequestForm: React.FC = () => {
                 <div className={styles.widget_header_title}>
                   <Typography.Title level={2}>
                     {params.id
-                      ? `${t(i18nKey.parameterEntity.title.updateParameter)}`
-                      : `${t(i18nKey.parameterEntity.title.createParameter)}`}
+                      ? `${t(
+                          i18nKey.deviceModelEntity.title.updateDeviceModel
+                        )}`
+                      : `${t(
+                          i18nKey.deviceModelEntity.title.createDeviceModel
+                        )}`}
                   </Typography.Title>
                 </div>
               </Col>
@@ -347,11 +321,10 @@ const RequestForm: React.FC = () => {
               form={form}
               layout="vertical"
               onFinish={
-                params.id ? handleUpdateParameter : handleCreateParameter
+                params.id ? handleUpdateDeviceModel : handleCreateDeviceModel
               }
               onFinishFailed={onFormFailed}
-              onValuesChange={onChangeValuesForm}
-            >
+              onValuesChange={onChangeValuesForm}>
               {renderFormItem()}
             </Form>
           </RegistrationContent>

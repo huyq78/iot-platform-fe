@@ -119,7 +119,7 @@ const privateRoutes: RouteType[] = [
     element: lazy(
       () =>
         import(
-          'src/pages/parameter/request-form/request-form.page'
+          'src/pages/device-model/request-form/request-form.page'
         )
     )
   },
@@ -128,7 +128,7 @@ const privateRoutes: RouteType[] = [
     element: lazy(
       () =>
         import(
-          'src/pages/parameter/request-form/request-form.page'
+          'src/pages/device-model/request-form/request-form.page'
         )
     )
   },
